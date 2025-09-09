@@ -1,0 +1,20 @@
+{
+  "type": "Topology",
+  "objects": {
+    "countries": {
+      "type": "GeometryCollection",
+      "geometries": [
+        {
+          "type": "Polygon",
+          "arcs": [[0]],
+          "properties": {
+            "name": "United States"
+          }
+        }
+      ]
+    }
+  },
+  "arcs": [
+    [[-180, -90], [180, -90], [180, 90], [-180, 90], [-180, -90]]
+  ]
+}
