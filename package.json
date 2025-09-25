@@ -17,7 +17,8 @@
     "react-helmet-async": "^2.0.4",
     "react-router-dom": "^6.26.1",
     "react-simple-maps": "^3.0.0",
-    "recharts": "^2.12.7"
+    "recharts": "^2.12.7",
+    "socket.io-client": "^4.7.2"
   },
   "devDependencies": {
     "@types/react": "^18.3.5",

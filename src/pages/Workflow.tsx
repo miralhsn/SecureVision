@@ -1,28 +1,61 @@
 import { motion } from "framer-motion";
 import { ArrowLeft, Mail, User, Building, MessageSquare, Shield, Brain, Bell, BarChart } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import apiService from "../services/api";
 
 export default function Workflow() {
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     email: "",
     company: "",
-    message: ""
+    message: "",
+    camerasNeeded: 1,
+    industry: "retail",
+    storeSize: "medium",
+    budget: "10k-50k",
+    timeline: "1-3-months"
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+    setError(""); // Clear error when user types
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log("Form submitted:", formData);
-    alert("Thank you for your interest! We'll contact you soon.");
+    setIsLoading(true);
+    setError("");
+
+    try {
+      await apiService.createDemoRequest(formData);
+      setSuccess(true);
+      // Reset form after success
+      setTimeout(() => {
+        setFormData({
+          name: "",
+          email: "",
+          company: "",
+          message: "",
+          camerasNeeded: 1,
+          industry: "retail",
+          storeSize: "medium",
+          budget: "10k-50k",
+          timeline: "1-3-months"
+        });
+        setSuccess(false);
+      }, 3000);
+    } catch (error) {
+      setError(error.message || 'Failed to submit demo request. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const workflowSteps = [
@@ -90,20 +123,33 @@ export default function Workflow() {
           >
             <h2 className="text-2xl font-bold mb-6">Get Started Today</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
+              {error && (
+                <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-lg text-sm">
+                  {error}
+                </div>
+              )}
+
+              {success && (
+                <div className="bg-green-500/10 border border-green-500/20 text-green-400 px-4 py-3 rounded-lg text-sm">
+                  Demo request submitted successfully! We'll contact you within 24 hours.
+                </div>
+              )}
+
               <div>
-                <label htmlFor="fullName" className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
                   Full Name
                 </label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                   <input
                     type="text"
-                    id="fullName"
-                    name="fullName"
-                    value={formData.fullName}
+                    id="name"
+                    name="name"
+                    value={formData.name}
                     onChange={handleInputChange}
                     required
-                    className="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
+                    disabled={isLoading}
+                    className="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400 disabled:opacity-50"
                     placeholder="Enter your full name"
                   />
                 </div>
@@ -122,7 +168,8 @@ export default function Workflow() {
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
+                    disabled={isLoading}
+                    className="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400 disabled:opacity-50"
                     placeholder="Enter your email"
                   />
                 </div>
@@ -141,7 +188,8 @@ export default function Workflow() {
                     value={formData.company}
                     onChange={handleInputChange}
                     required
-                    className="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
+                    disabled={isLoading}
+                    className="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400 disabled:opacity-50"
                     placeholder="Enter your company name"
                   />
                 </div>
@@ -159,7 +207,8 @@ export default function Workflow() {
                     value={formData.message}
                     onChange={handleInputChange}
                     rows={4}
-                    className="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400 resize-none"
+                    disabled={isLoading}
+                    className="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400 resize-none disabled:opacity-50"
                     placeholder="Tell us about your security needs..."
                   />
                 </div>
@@ -167,9 +216,10 @@ export default function Workflow() {
 
               <button
                 type="submit"
-                className="w-full bg-brand-500 hover:bg-brand-600 text-white font-medium py-3 px-6 rounded-lg transition hover-glow"
+                disabled={isLoading}
+                className="w-full bg-brand-500 hover:bg-brand-600 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-medium py-3 px-6 rounded-lg transition hover-glow"
               >
-                Request Demo
+                {isLoading ? 'Submitting...' : 'Request Demo'}
               </button>
             </form>
           </motion.div>

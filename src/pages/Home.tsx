@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ShieldAlert,
   Play,
@@ -16,6 +16,7 @@ import {
   Marker,
 } from "react-simple-maps";
 import Head from "../components/Head";
+import apiService from "../services/api";
 
 const geoUrl = "https://unpkg.com/world-atlas@2/countries-110m.json";
 const fallbackGeoUrl = "/data/world-110m.json";
@@ -26,7 +27,7 @@ type ShrinkageData = {
   shrinkage: string;
 };
 
-const shrinkageData: ShrinkageData[] = [
+const defaultShrinkageData: ShrinkageData[] = [
   { name: "United States", coordinates: [-100, 40], shrinkage: "2.0%" },
   { name: "Brazil", coordinates: [-51, -10], shrinkage: "1.7%" },
   { name: "South Africa", coordinates: [24, -29], shrinkage: "2.3%" },
@@ -38,6 +39,25 @@ const shrinkageData: ShrinkageData[] = [
 
 export default function Home() {
   const [mapError, setMapError] = useState(false);
+  const [shrinkageData, setShrinkageData] = useState<ShrinkageData[]>(defaultShrinkageData);
+  const [isLoadingShrinkage, setIsLoadingShrinkage] = useState(false);
+
+  useEffect(() => {
+    fetchShrinkageData();
+  }, []);
+
+  const fetchShrinkageData = async () => {
+    try {
+      setIsLoadingShrinkage(true);
+      const response = await apiService.getShrinkageAnalytics();
+      setShrinkageData(response.data.countryData);
+    } catch (error) {
+      console.error('Failed to fetch shrinkage data:', error);
+      // Keep default data if API fails
+    } finally {
+      setIsLoadingShrinkage(false);
+    }
+  };
 
   return (
     <>

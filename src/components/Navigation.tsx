@@ -28,20 +28,20 @@ export default function Navigation() {
               Home
             </NavLink>
             <NavLink
-              to="/features"
-              className={({ isActive }) =>
-                `text-gray-300 hover:text-white transition ${isActive ? 'text-white border-b-2 border-brand-500 pb-1' : ''}`
-              }
-            >
-              Features
-            </NavLink>
-            <NavLink
               to="/dashboard"
               className={({ isActive }) =>
                 `text-gray-300 hover:text-white transition ${isActive ? 'text-white border-b-2 border-brand-500 pb-1' : ''}`
               }
             >
               Dashboard
+            </NavLink>
+            <NavLink
+              to="/features"
+              className={({ isActive }) =>
+                `text-gray-300 hover:text-white transition ${isActive ? 'text-white border-b-2 border-brand-500 pb-1' : ''}`
+              }
+            >
+              Use Cases
             </NavLink>
             <NavLink
               to="/workflow"
@@ -103,18 +103,18 @@ export default function Navigation() {
                 Home
               </Link>
               <Link
-                to="/features"
-                className="text-gray-300 hover:text-white transition"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Features
-              </Link>
-              <Link
                 to="/dashboard"
                 className="text-gray-300 hover:text-white transition"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Dashboard
+              </Link>
+              <Link
+                to="/features"
+                className="text-gray-300 hover:text-white transition"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Use Cases
               </Link>
               <Link
                 to="/workflow"

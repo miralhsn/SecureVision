@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react'
-import { AlertTriangle, Download, PlayCircle } from 'lucide-react'
+import { useMemo, useState, useEffect } from 'react'
+import { AlertTriangle, Download, PlayCircle, Camera, TrendingUp } from 'lucide-react'
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, AreaChart, Area, PieChart, Pie, Cell, Legend } from 'recharts'
 import ExportModal from '../components/ExportModal'
+import apiService from '../services/api'
 
 const chartData = Array.from({ length: 24 }).map((_, i) => ({
   hour: `${i}:00`,
@@ -12,25 +13,55 @@ const chartData = Array.from({ length: 24 }).map((_, i) => ({
 type Log = { id: number; time: string; message: string; level: 'info' | 'warning' | 'critical' }
 
 export default function Dashboard() {
-  const [logs] = useState<Log[]>(() => (
-    Array.from({ length: 10 }).map((_, i) => ({
-      id: i + 1,
-      time: new Date(Date.now() - i * 1000 * 60 * 5).toLocaleTimeString(),
-      message: i % 3 === 0 ? 'Loitering detected near entrance A' : i % 3 === 1 ? 'Unattended object detected in lobby' : 'Perimeter breach risk increased',
-      level: i % 3 === 0 ? 'warning' : i % 3 === 1 ? 'info' : 'critical',
-    }))
-  ))
-
+  const [logs, setLogs] = useState<Log[]>([])
   const [isExportModalOpen, setIsExportModalOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [analytics, setAnalytics] = useState<any>(null)
+
+  useEffect(() => {
+    fetchDashboardData()
+  }, [])
+
+  const fetchDashboardData = async () => {
+    try {
+      setIsLoading(true)
+      const response = await apiService.getDashboardAnalytics()
+      setAnalytics(response.data)
+      
+      // Transform recent activities to logs format
+      const recentLogs = response.data.recentActivities.map((activity: any, index: number) => ({
+        id: index + 1,
+        time: new Date(activity.timestamp).toLocaleTimeString(),
+        message: activity.details.description,
+        level: activity.severity === 'critical' ? 'critical' : activity.severity === 'high' ? 'warning' : 'info'
+      }))
+      setLogs(recentLogs)
+    } catch (error) {
+      console.error('Failed to fetch dashboard data:', error)
+      setError('Failed to load dashboard data')
+      // Fallback to mock data
+      setLogs(Array.from({ length: 10 }).map((_, i) => ({
+        id: i + 1,
+        time: new Date(Date.now() - i * 1000 * 60 * 5).toLocaleTimeString(),
+        message: i % 3 === 0 ? 'Loitering detected near entrance A' : i % 3 === 1 ? 'Unattended object detected in lobby' : 'Perimeter breach risk increased',
+        level: i % 3 === 0 ? 'warning' : i % 3 === 1 ? 'info' : 'critical',
+      })))
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   const riskAvg = useMemo(() => (chartData.reduce((a, b) => a + b.risk, 0) / chartData.length), [])
 
-  const alertsByType = [
-    { name: 'Loitering', value: 12 },
-    { name: 'Intrusion', value: 8 },
-    { name: 'Object Left', value: 6 },
-    { name: 'Violence', value: 3 },
-  ]
+  const alertsByType = analytics?.alertsByType ? 
+    Object.entries(analytics.alertsByType).map(([name, value]) => ({ name, value })) :
+    [
+      { name: 'Loitering', value: 12 },
+      { name: 'Intrusion', value: 8 },
+      { name: 'Object Left', value: 6 },
+      { name: 'Violence', value: 3 },
+    ]
   const pieColors = ['#60a5fa', '#22d3ee', '#f59e0b', '#ef4444']
 
   const handleExport = (format: "pdf" | "csv") => {
@@ -50,6 +81,21 @@ export default function Dashboard() {
     URL.revokeObjectURL(url)
   }
 
+  if (isLoading) {
+    return (
+      <section className="relative">
+        <div className="mx-auto max-w-7xl px-4 py-16 md:py-24">
+          <div className="flex items-center justify-center h-64">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+              <p className="text-gray-400">Loading dashboard...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section className="relative">
       <div className="mx-auto max-w-7xl px-4 py-16 md:py-24">
@@ -62,6 +108,12 @@ export default function Dashboard() {
             <Download className="h-4 w-4" /> Export
           </button>
         </div>
+
+        {error && (
+          <div className="mb-6 bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-lg text-sm">
+            {error}
+          </div>
+        )}
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="glass relative aspect-video overflow-hidden rounded-xl border border-white/10 lg:col-span-2">
@@ -141,11 +193,11 @@ export default function Dashboard() {
             <div className="grid grid-cols-2 gap-4">
               <div className="rounded-lg bg-black/30 border border-white/10 p-4">
                 <p className="text-sm text-white/60">Active</p>
-                <p className="text-2xl font-semibold">42</p>
+                <p className="text-2xl font-semibold">{analytics?.overview?.activeCameras || 42}</p>
               </div>
               <div className="rounded-lg bg-black/30 border border-white/10 p-4">
                 <p className="text-sm text-white/60">Offline</p>
-                <p className="text-2xl font-semibold">3</p>
+                <p className="text-2xl font-semibold">{analytics?.overview?.offlineCameras || 3}</p>
               </div>
             </div>
           </div>
