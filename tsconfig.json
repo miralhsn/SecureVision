@@ -12,6 +12,8 @@
     "jsx": "react-jsx",
     "strict": true,
     "baseUrl": ".",
+    "allowJs": true,
+    "noImplicitAny": false,
     "paths": {
       "@/*": ["src/*"]
     }

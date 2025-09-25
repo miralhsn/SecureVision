@@ -57,7 +57,8 @@ export default function Signup() {
       // Redirect to dashboard
       navigate('/dashboard');
     } catch (error) {
-      setError(error.message || 'Registration failed. Please try again.');
+      const message = error instanceof Error ? error.message : 'Registration failed. Please try again.';
+      setError(message);
     } finally {
       setIsLoading(false);
     }

@@ -37,7 +37,8 @@ export default function Login() {
       // Redirect to dashboard
       navigate('/dashboard');
     } catch (error) {
-      setError(error.message || 'Login failed. Please try again.');
+      const message = error instanceof Error ? error.message : 'Login failed. Please try again.';
+      setError(message);
     } finally {
       setIsLoading(false);
     }

@@ -52,7 +52,8 @@ export default function Workflow() {
         setSuccess(false);
       }, 3000);
     } catch (error) {
-      setError(error.message || 'Failed to submit demo request. Please try again.');
+      const message = error instanceof Error ? error.message : 'Failed to submit demo request. Please try again.';
+      setError(message);
     } finally {
       setIsLoading(false);
     }
