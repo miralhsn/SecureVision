@@ -62,7 +62,7 @@ export default function Home() {
   return (
     <>
       <Head 
-        title="SecureVision - AI-Powered CCTV Surveillance & Analytics"
+        title="SecureVision"
         description="Real-time detection of suspicious activity, intelligent alerts, and actionable insights. Built for enterprises that demand security with elegance."
         keywords="AI surveillance, CCTV analytics, security monitoring, threat detection, retail security, enterprise security"
       />
@@ -102,12 +102,12 @@ export default function Home() {
               >
                 Request a Demo <ArrowRight className="h-4 w-4" />
               </Link>
-              <a
-                href="#preview"
+              <Link
+                to="/dashboard"
                 className="inline-flex items-center gap-2 border border-white/10 px-5 py-3 text-sm text-white/80 rounded-md hover:bg-white/5 transition"
               >
                 <Play className="h-4 w-4" /> Preview
-              </a>
+              </Link>
             </div>
             <div className="mt-10 flex items-center gap-3 text-xs text-white/50">
               <ShieldAlert className="h-4 w-4 text-neon" />
@@ -139,7 +139,7 @@ export default function Home() {
       </div>
 
       {/* Why Choose SecureVision */}
-      <section className="py-20 section-ink text-white relative overflow-hidden">
+      <section className="py-20 bg-[#0b1324] text-white relative overflow-hidden border-t border-white/5">
         <div className="max-w-6xl mx-auto text-center mb-16">
           <h2 className="text-4xl font-bold mb-4">Why Choose SecureVision?</h2>
           <p className="text-gray-400">
@@ -158,7 +158,7 @@ export default function Home() {
                     <Camera className="h-8 w-8 text-blue-400" />
                   </div>
                   <h3 className="text-xl font-semibold text-white mb-2">Web Dashboard</h3>
-                  <p className="text-sm text-gray-400">Real-time monitoring</p>
+                  <p className="text-sm text-gray-400">Real-time monitoring, alerts, exports</p>
                 </div>
               </div>
               {/* Route tracking overlay */}
@@ -260,7 +260,7 @@ export default function Home() {
       </section>
 
       {/* Global Retail Shrinkage */}
-      <section className="py-20 section-black text-white relative">
+      <section className="py-20 bg-black text-white relative border-t border-white/5">
         <div className="max-w-6xl mx-auto text-center mb-12">
           <h2 className="text-4xl font-bold mb-4">Global Retail Shrinkage</h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
@@ -354,10 +354,10 @@ export default function Home() {
 
       </section>
 
-      {/* Use Cases */}
-      <section className="py-20 section-night text-white relative overflow-hidden">
+      {/* Solutions */}
+      <section className="py-20 bg-[#0b1324] text-white relative overflow-hidden border-t border-white/5">
         <div className="max-w-6xl mx-auto text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4">Use Cases</h2>
+          <h2 className="text-4xl font-bold mb-4">Solutions</h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
             From retail to law enforcement, SecureVision adapts to your
             environment.

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowLeft, Mail, Lock, Eye, EyeOff, User, Building } from "lucide-react";
+import { GoogleLogin } from '@react-oauth/google';
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import apiService from "../services/api";
@@ -237,6 +238,7 @@ export default function Signup() {
               >
                 {isLoading ? 'Creating Account...' : 'Create Account'}
               </button>
+
             </form>
 
             <div className="mt-6 text-center">

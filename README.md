@@ -112,7 +112,7 @@ SOCKET_CORS_ORIGIN=http://localhost:5173
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/miralhsn/SecureVision
    cd securevision
    ```
 

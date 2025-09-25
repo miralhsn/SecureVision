@@ -4,6 +4,16 @@ import { Menu, X, Search, LogIn, UserPlus } from "lucide-react";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const results = [
+    { label: 'Home', path: '/' },
+    { label: 'Dashboard', path: '/dashboard' },
+    { label: 'Solutions', path: '/solutions' },
+    { label: 'Demo', path: '/workflow' },
+    { label: 'About', path: '/about' },
+  ].filter(r => r.label.toLowerCase().includes(searchQuery.toLowerCase()));
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
@@ -41,7 +51,7 @@ export default function Navigation() {
                 `text-gray-300 hover:text-white transition ${isActive ? 'text-white border-b-2 border-brand-500 pb-1' : ''}`
               }
             >
-              Use Cases
+              Solutions
             </NavLink>
             <NavLink
               to="/workflow"
@@ -63,9 +73,34 @@ export default function Navigation() {
 
           {/* Right Side Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            <button className="p-2 text-gray-300 hover:text-white transition">
-              <Search className="h-5 w-5" />
-            </button>
+            <div className="relative">
+              <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="p-2 text-gray-300 hover:text-white transition">
+                <Search className="h-5 w-5" />
+              </button>
+              {isSearchOpen && (
+                <div className="absolute right-0 mt-2 w-64 bg-black/90 border border-white/10 rounded-lg p-2 backdrop-blur">
+                  <input
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search..."
+                    className="w-full bg-transparent border border-white/10 rounded px-3 py-2 text-sm outline-none"
+                  />
+                  {searchQuery && (
+                    <div className="mt-2 max-h-48 overflow-auto">
+                      {results.length === 0 ? (
+                        <div className="text-xs text-white/60 px-2 py-1">No results</div>
+                      ) : (
+                        results.map(r => (
+                          <NavLink key={r.path} to={r.path} onClick={() => setIsSearchOpen(false)} className="block px-2 py-1 text-sm text-white/80 hover:text-white hover:bg-white/5 rounded">
+                            {r.label}
+                          </NavLink>
+                        ))
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
             <Link
               to="/login"
               className="flex items-center gap-2 px-4 py-2 text-gray-300 hover:text-white transition"

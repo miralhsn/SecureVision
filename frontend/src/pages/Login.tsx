@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowLeft, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { GoogleLogin } from '@react-oauth/google';
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import apiService from "../services/api";
@@ -143,6 +144,7 @@ export default function Login() {
               >
                 {isLoading ? 'Signing In...' : 'Sign In'}
               </button>
+
             </form>
 
             <div className="mt-6 text-center">

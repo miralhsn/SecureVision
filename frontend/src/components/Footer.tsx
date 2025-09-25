@@ -3,37 +3,38 @@ import { Shield, Mail, Phone, MapPin } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0a0f1a] text-white py-16">
+    <footer className="bg-[#0b0f19] text-white py-6">
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-4 gap-8">
+        {/* Main Footer Content */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
           {/* Company Info */}
-          <div className="md:col-span-1">
-            <div className="flex items-center space-x-2 mb-4">
+          <div className="lg:col-span-1">
+            <div className="flex items-center space-x-2 mb-3">
               <div className="w-8 h-8 bg-brand-500 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">SV</span>
               </div>
               <span className="text-xl font-bold">SecureVision</span>
             </div>
-            <p className="text-gray-400 mb-6">
+            <p className="text-gray-400 text-sm mb-4">
               AI-powered surveillance and analytics for modern security needs.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-3">
               <a href="#" className="text-gray-400 hover:text-white transition">
-                <Mail className="h-5 w-5" />
+                <Mail className="h-4 w-4" />
               </a>
               <a href="#" className="text-gray-400 hover:text-white transition">
-                <Phone className="h-5 w-5" />
+                <Phone className="h-4 w-4" />
               </a>
               <a href="#" className="text-gray-400 hover:text-white transition">
-                <MapPin className="h-5 w-5" />
+                <MapPin className="h-4 w-4" />
               </a>
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
+            <h3 className="text-sm font-semibold mb-3 tracking-wide text-white/80">Quick Links</h3>
+            <ul className="space-y-2 text-sm">
               <li>
                 <Link to="/about" className="text-gray-400 hover:text-white transition">
                   About
@@ -51,7 +52,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link to="/features" className="text-gray-400 hover:text-white transition">
-                  Features
+                  Solutions
                 </Link>
               </li>
               <li>
@@ -59,21 +60,13 @@ export default function Footer() {
                   Demo
                 </Link>
               </li>
-              <li>
-                <a href="#contact" className="text-gray-400 hover:text-white transition">Contact</a>
-              </li>
-              <li>
-                <Link to="/privacy" className="text-gray-400 hover:text-white transition">
-                  Privacy
-                </Link>
-              </li>
             </ul>
           </div>
 
           {/* Products */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Products</h3>
-            <ul className="space-y-2">
+            <h3 className="text-sm font-semibold mb-3 tracking-wide text-white/80">Products</h3>
+            <ul className="space-y-2 text-sm">
               <li>
                 <a href="#" className="text-gray-400 hover:text-white transition">
                   Retail Security
@@ -97,26 +90,10 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Newsletter */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Subscribe for updates</h3>
-            <p className="text-gray-400 text-sm mb-3">Get the latest news and product updates.</p>
-            <form className="flex gap-2">
-              <input
-                type="email"
-                placeholder="Your email"
-                className="flex-1 bg-gray-900/60 border border-gray-700 rounded-lg px-3 py-2 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500"
-              />
-              <button className="bg-brand-500 hover:bg-brand-600 text-white px-4 py-2 rounded-lg text-sm transition">
-                Subscribe
-              </button>
-            </form>
-          </div>
-
           {/* Legal */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Legal</h3>
-            <ul className="space-y-2">
+            <h3 className="text-sm font-semibold mb-3 tracking-wide text-white/80">Legal</h3>
+            <ul className="space-y-2 text-sm">
               <li>
                 <Link to="/privacy" className="text-gray-400 hover:text-white transition">
                   Privacy Policy
@@ -141,10 +118,29 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-12 pt-8">
+        {/* Subscribe Section - Always at bottom */}
+        <div className="border-t border-white/10 pt-6 mb-6">
+          <div className="max-w-md mx-auto text-center">
+            <h3 className="text-sm font-semibold mb-3 tracking-wide text-white/80">Subscribe for updates</h3>
+            <p className="text-gray-400 text-xs mb-4">Get the latest news and product updates.</p>
+            <form className="flex gap-2">
+              <input
+                type="email"
+                placeholder="Your email"
+                className="flex-1 bg-gray-900/60 border border-gray-700 rounded-lg px-3 py-2 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500"
+              />
+              <button className="bg-brand-500 hover:bg-brand-600 text-white px-4 py-2 rounded-lg text-sm transition">
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
+
+        {/* Copyright */}
+        <div className="border-t border-white/10 pt-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-sm">© 2024 SecureVision. All rights reserved.</p>
-            <div className="flex items-center space-x-2 mt-4 md:mt-0">
+            <p className="text-gray-400 text-sm">© 2025 SecureVision. All rights reserved.</p>
+            <div className="flex items-center space-x-2 mt-2 md:mt-0">
               <Shield className="h-4 w-4 text-brand-400" />
               <span className="text-sm text-gray-400">Enterprise-grade security</span>
             </div>

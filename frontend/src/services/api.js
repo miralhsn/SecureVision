@@ -45,10 +45,24 @@ class ApiService {
     });
   }
 
+  async loginWithGoogle(credential) {
+    return this.request('/auth/google', {
+      method: 'POST',
+      body: JSON.stringify({ credential })
+    });
+  }
+
   async register(userData) {
     return this.request('/auth/register', {
       method: 'POST',
       body: JSON.stringify(userData)
+    });
+  }
+
+  async signupWithGoogle(credential) {
+    return this.request('/auth/google-signup', {
+      method: 'POST',
+      body: JSON.stringify({ credential })
     });
   }
 
@@ -170,6 +184,24 @@ class ApiService {
   async getCameras(params = {}) {
     const queryParams = new URLSearchParams(params);
     return this.request(`/cameras?${queryParams.toString()}`);
+  }
+
+  // Feeds & Logs
+  async getCameraFeeds(params = {}) {
+    const queryParams = new URLSearchParams(params);
+    return this.request(`/feeds?${queryParams.toString()}`);
+  }
+
+  async getActivityLogs(params = {}) {
+    const queryParams = new URLSearchParams(params);
+    return this.request(`/logs?${queryParams.toString()}`);
+  }
+
+  async submitIncidentFeedback(id, payload) {
+    return this.request(`/incidents/${id}/feedback`, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
   }
 
   async getCameraById(id) {

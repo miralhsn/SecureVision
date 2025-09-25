@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard'
 import About from './pages/About'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
+import ErrorBoundary from './components/ErrorBoundary'
 
 const router = createBrowserRouter([
   {
@@ -30,9 +31,11 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <HelmetProvider>
-      <RouterProvider router={router} />
-    </HelmetProvider>
+    <ErrorBoundary>
+      <HelmetProvider>
+        <RouterProvider router={router} />
+      </HelmetProvider>
+    </ErrorBoundary>
   </React.StrictMode>,
 )
 

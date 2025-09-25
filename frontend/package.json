@@ -18,7 +18,8 @@
     "react-router-dom": "^6.26.1",
     "react-simple-maps": "^3.0.0",
     "recharts": "^2.12.7",
-    "socket.io-client": "^4.7.2"
+    "socket.io-client": "^4.7.2",
+    "@react-oauth/google": "^0.12.1"
   },
   "devDependencies": {
     "@types/node": "^24.5.2",

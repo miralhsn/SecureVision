@@ -2,6 +2,7 @@ import { useMemo, useState, useEffect } from 'react'
 import { AlertTriangle, Download, PlayCircle, Camera, TrendingUp } from 'lucide-react'
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, AreaChart, Area, PieChart, Pie, Cell, Legend } from 'recharts'
 import ExportModal from '../components/ExportModal'
+import { Link } from 'react-router-dom'
 import apiService from '../services/api'
 
 const chartData = Array.from({ length: 24 }).map((_, i) => ({
@@ -18,6 +19,8 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
   const [analytics, setAnalytics] = useState<any>(null)
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
+  const isAuthed = Boolean(token)
 
   useEffect(() => {
     fetchDashboardData()
@@ -26,17 +29,51 @@ export default function Dashboard() {
   const fetchDashboardData = async () => {
     try {
       setIsLoading(true)
-      const response = await apiService.getDashboardAnalytics()
-      setAnalytics(response.data)
       
-      // Transform recent activities to logs format
-      const recentLogs = response.data.recentActivities.map((activity: any, index: number) => ({
-        id: index + 1,
-        time: new Date(activity.timestamp).toLocaleTimeString(),
-        message: activity.details.description,
-        level: activity.severity === 'critical' ? 'critical' : activity.severity === 'high' ? 'warning' : 'info'
-      }))
-      setLogs(recentLogs)
+      if (useDummyData) {
+        // Use dummy data for unauthenticated users
+        setAnalytics({
+          overview: {
+            activeCameras: 42,
+            offlineCameras: 3,
+            totalAlerts: 15,
+            resolvedAlerts: 12
+          },
+          alertsByType: {
+            'Loitering': 12,
+            'Intrusion': 8,
+            'Object Left': 6,
+            'Violence': 3
+          },
+          recentActivities: Array.from({ length: 10 }).map((_, i) => ({
+            timestamp: new Date(Date.now() - i * 1000 * 60 * 5).toISOString(),
+            details: {
+              description: i % 3 === 0 ? 'Loitering detected near entrance A' : i % 3 === 1 ? 'Unattended object detected in lobby' : 'Perimeter breach risk increased'
+            },
+            severity: i % 3 === 0 ? 'warning' : i % 3 === 1 ? 'info' : 'critical'
+          }))
+        })
+        
+        setLogs(Array.from({ length: 10 }).map((_, i) => ({
+          id: i + 1,
+          time: new Date(Date.now() - i * 1000 * 60 * 5).toLocaleTimeString(),
+          message: i % 3 === 0 ? 'Loitering detected near entrance A' : i % 3 === 1 ? 'Unattended object detected in lobby' : 'Perimeter breach risk increased',
+          level: i % 3 === 0 ? 'warning' : i % 3 === 1 ? 'info' : 'critical',
+        })))
+      } else {
+        // Fetch real data for authenticated users
+        const response = await apiService.getDashboardAnalytics()
+        setAnalytics(response.data)
+        
+        // Transform recent activities to logs format
+        const recentLogs = response.data.recentActivities.map((activity: any, index: number) => ({
+          id: index + 1,
+          time: new Date(activity.timestamp).toLocaleTimeString(),
+          message: activity.details.description,
+          level: activity.severity === 'critical' ? 'critical' : activity.severity === 'high' ? 'warning' : 'info'
+        }))
+        setLogs(recentLogs)
+      }
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error)
       setError('Failed to load dashboard data')
@@ -81,6 +118,9 @@ export default function Dashboard() {
     URL.revokeObjectURL(url)
   }
 
+  // Use dummy data for unauthenticated users, real data for authenticated users
+  const useDummyData = !isAuthed;
+
   if (isLoading) {
     return (
       <section className="relative">
@@ -108,6 +148,19 @@ export default function Dashboard() {
             <Download className="h-4 w-4" /> Export
           </button>
         </div>
+
+        {useDummyData && (
+          <div className="mb-6 bg-blue-500/10 border border-blue-500/20 text-blue-400 px-4 py-3 rounded-lg text-sm">
+            <div className="flex items-center justify-between">
+              <span>🔒 Demo Mode - Login to access live data and full features</span>
+              <div className="flex gap-2">
+                <Link to="/login" className="text-blue-300 hover:text-blue-200 underline">Login</Link>
+                <span>•</span>
+                <Link to="/signup" className="text-blue-300 hover:text-blue-200 underline">Sign Up</Link>
+              </div>
+            </div>
+          </div>
+        )}
 
         {error && (
           <div className="mb-6 bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-lg text-sm">

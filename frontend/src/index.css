@@ -2,6 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Responsive improvements */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .glass-card {
+    padding: 1rem;
+  }
+  
+  .text-4xl {
+    font-size: 2rem;
+  }
+  
+  .text-5xl {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    gap: 1rem;
+  }
+  
+  .py-20 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  
+  .py-16 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+}
+
 :root {
   --brand-400: #60a5fa;
   --brand-500: #3b82f6;
@@ -15,6 +51,19 @@
   --surface-ink: #050910;      /* bluish charcoal */
   --surface-night: #0b1220;    /* deeper bluish */
   --surface-black: #000;       /* pure black */
+}
+
+/* Ensure body has proper styling */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: #0a1220;
+  color: white;
+}
+
+#root {
+  min-height: 100vh;
 }
 
 /* ===== Global Background Layers (hero) ===== */
