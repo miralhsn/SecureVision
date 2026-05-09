@@ -46,6 +46,9 @@ SecureVision introduces an active monitoring system:
 ## System Architecture
 
 Camera Feed → Frame Extraction → Detection Model (YOLO) → Event Processing → UI Display
+<p align="center">
+  <img src="assets/architecturediagram.png" width="800"/>
+</p>
 
 ---
 
