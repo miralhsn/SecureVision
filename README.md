@@ -37,17 +37,7 @@ Instead of passively recording video, it:
 
 > 🧠 Understands live video streams  
 > ⚡ Detects events in real-time  
-> 🚨 Enables proactive monitoring  
-
----
-
-## 🎥 Live System Preview
-
-<p align="center">
-  <img src="assets/demo.gif" width="800"/>
-</p>
-
-> ⚠️ Add a screen recording here — this is the MOST important part for recruiters.
+> 🚨 Enables proactive monitoring
 
 ---
 
@@ -56,9 +46,6 @@ Instead of passively recording video, it:
 <p align="center">
   <img src="assets/architecturediagram.png" width="800"/>
 </p>
-
-```text
-Camera Feed → Frame Extraction → YOLO Detection → Event Processing → UI Dashboard
 
 ## ⚙️ Core Features
 
